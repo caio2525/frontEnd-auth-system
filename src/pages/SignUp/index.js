@@ -2,9 +2,13 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import axios from "axios"
+import Form from '../../components/Form';
+import '../../styles/index.css';
+import {SignUpContainer} from './styles';
 
 export default function SignUp() {
   const { register, handleSubmit, formState: { errors } } = useForm();
+
   const onSubmit = data => {
     const url = 'http://localhost:5000/signup';
 
@@ -32,32 +36,79 @@ export default function SignUp() {
 
   };
 
+  const onSubmit2 = (data) => {
+    console.log(data)
+  }
+
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <SignUpContainer>
 
-      <input type="text" placeholder="User Name" {...register("userName", {required: true, maxLength: 80})} />
-      <ErrorMessage
-        errors={errors}
-        name="User Name"
-        render={({ message }) => <p>{message}</p>}
-      />
+      <Form title="Sign Up" onSubmit={handleSubmit(onSubmit2)}>
 
-      <input type="text" placeholder="Email" {...register("userEmail", {required: true, pattern: /^\S+@\S+$/i})} />
-      <ErrorMessage
-        errors={errors}
-        name="Email"
-        render={({ message }) => <p>Verifique o email</p>}
-      />
+        <div className="form-group">
+          <label className="input-label">User Name</label>
+          <input
+            className="input-field"
+            type="text"
+            placeholder="Digite seu Nome"
+            {...register("userName", {required: 'This field is required'})} />
+          <ErrorMessage
+            errors={errors}
+            name="userName"
+            render={({ message }) => <div className="error-message">{message}</div>}
+          />
+        </div>
 
-      <input type="password" placeholder="Password" {...register("userPassword", {required: true, max: 80})} />
-      <ErrorMessage
-        errors={errors}
-        name="Password"
-        render={({ message }) => <p>{message}</p>}
-      />
+        <div className="form-group">
+          <label className="input-label">User Email</label>
+          <input
+            className="input-field"
+            type="email"
+            placeholder="Email"
+            {...register("userEmail",
+              {
+                required: 'This field is required',
 
-      <input type="submit" />
-    </form>
+              }
+            )}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="userEmail"
+            render={({ message }) => <div className="error-message">{message}</div>}
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="input-label">Password</label>
+          <input
+            className="input-field"
+            type="password"
+            placeholder="Password"
+            {...register("userPassword",
+              {
+                required: 'This field is required',
+                minLength :{
+                  value: 4,
+                  message: 'The password must be 4 characters or longer' // JS only: <p>error message</p> TS only support string
+                }
+              }
+            )}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="userPassword"
+            render={({ message }) => <div className="error-message">{message}</div>}
+          />
+        </div>
+
+        <input
+          value="Submit"
+          className="input-button"
+          type="submit" />
+      </Form>
+
+    </SignUpContainer>
   );
 }

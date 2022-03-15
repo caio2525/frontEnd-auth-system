@@ -16,7 +16,11 @@ export default function Login() {
 
     console.log(data)
 
-    axios.post(url, fd)
+    const api = axios.create({
+       withCredentials: true
+    });
+
+    api.post(url, fd)
     .then(resp => {
       console.log('resp', resp)
       return resp.data
