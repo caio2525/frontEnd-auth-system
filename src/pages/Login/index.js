@@ -1,13 +1,17 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import axios from "axios"
+
+import '../../styles/index.css';
+import Form from '../../components/Form';
+import {apiPost} from '../../services/api'
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate()
 
-  const onSubmit = data => {
-    const url = 'http://localhost:5000/login';
+  const onSubmit = async data => {
 
     const fd = new FormData();
 
@@ -16,46 +20,70 @@ export default function Login() {
 
     console.log(data)
 
-    const api = axios.create({
-       withCredentials: true
-    });
-
-    api.post(url, fd)
-    .then(resp => {
-      console.log('resp', resp)
-      return resp.data
-    })
-    .then(resp => console.log(resp))
-    .catch(error => {
-      console.log('error', error)
-      }
-    )
-    .finally(() => {
-      console.log('finally')
-    })
+    const func = () => navigate('/dash')
+    apiPost('/login', fd, func)
+    //console.log('retorno', retorno)
+    //setTimeout(() => console.log('retorno', retorno), 5000)
 
   };
 
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
 
+    <div className="page-container">
+      <Form title="Log In" onSubmit={handleSubmit(onSubmit)}>
 
-      <input type="text" placeholder="Email" {...register("userEmail", {required: true, pattern: /^\S+@\S+$/i})} />
-      <ErrorMessage
-        errors={errors}
-        name="Email"
-        render={({ message }) => <p>Verifique o email</p>}
-      />
+        <div className="form-group">
+          <label className="input-label">User Email</label>
+          <input
+            className="input-field"
+            type="email"
+            placeholder="Email"
+            {...register("userEmail",
+              {
+                required: 'This field is required',
 
-      <input type="password" placeholder="Password" {...register("userPassword", {required: true, max: 80})} />
-      <ErrorMessage
-        errors={errors}
-        name="Password"
-        render={({ message }) => <p>{message}</p>}
-      />
+              }
+            )}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="userEmail"
+            render={({ message }) => <div className="error-message">{message}</div>}
+          />
+        </div>
 
-      <input type="submit" />
-    </form>
+        <div className="form-group">
+          <label className="input-label">Password</label>
+          <input
+            className="input-field"
+            type="password"
+            placeholder="Password"
+            {...register("userPassword",
+              {
+                required: 'This field is required',
+                minLength :{
+                  value: 4,
+                  message: 'The password must be 4 characters or longer' // JS only: <p>error message</p> TS only support string
+                }
+              }
+            )}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="userPassword"
+            render={({ message }) => <div className="error-message">{message}</div>}
+          />
+        </div>
+
+        <input
+          value="Submit"
+          className="input-button"
+          type="submit"
+        />
+
+      </Form>
+    </div>
+
   );
 }

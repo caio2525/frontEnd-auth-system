@@ -1,16 +1,18 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
-import axios from "axios"
-import Form from '../../components/Form';
 import '../../styles/index.css';
-import {SignUpContainer} from './styles';
+import Form from '../../components/Form';
+
+import {apiPost} from '../../services/api';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function SignUp() {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate()
 
   const onSubmit = data => {
-    const url = 'http://localhost:5000/signup';
 
     const fd = new FormData();
 
@@ -20,31 +22,16 @@ export default function SignUp() {
 
     console.log(data)
 
-    axios.post(url, fd)
-    .then(resp => {
-      console.log('resp', resp)
-      return(resp.data)
-    })
-    .then(resp => console.log(resp))
-    .catch(error => {
-      console.log('error', error)
-      }
-    )
-    .finally(() => {
-      console.log('finally')
-    })
+    const func = () => navigate('/dash')
+    apiPost('/signup', fd, func)
+
 
   };
 
-  const onSubmit2 = (data) => {
-    console.log(data)
-  }
-
-
   return (
-    <SignUpContainer>
+    <div className="page-container">
 
-      <Form title="Sign Up" onSubmit={handleSubmit(onSubmit2)}>
+      <Form title="Sign Up" onSubmit={handleSubmit(onSubmit)}>
 
         <div className="form-group">
           <label className="input-label">User Name</label>
@@ -106,9 +93,10 @@ export default function SignUp() {
         <input
           value="Submit"
           className="input-button"
-          type="submit" />
-      </Form>
+          type="submit"
+        />
 
-    </SignUpContainer>
+      </Form>
+    </div>
   );
 }

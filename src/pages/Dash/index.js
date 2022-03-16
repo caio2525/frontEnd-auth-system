@@ -2,9 +2,49 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import axios from "axios"
+import '../../styles/index.css';
+import { ToDosContainer, ToDo, ToDoName } from './styles';
 
 export default function Dash() {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const todos = [
+    {
+      'name': 'item item item tiem 1',
+      'done': false
+    },
+    {
+      'name': 'item 2',
+      'done': true
+    },
+    {
+      'name': 'item 3',
+      'done': false
+    },
+    {
+      'name': 'item 4',
+      'done': false
+    },
+    {
+      'name': 'item 5',
+      'done': true
+    },
+    {
+      'name': 'item 5',
+      'done': true
+    },
+    {
+      'name': 'item 5',
+      'done': true
+    },
+    {
+      'name': 'item 5',
+      'done': true
+    },
+    {
+      'name': 'item 5',
+      'done': true
+    },
+  ]
 
   const onSubmit = data => {
     const url = 'http://localhost:5000/addToDo';
@@ -36,44 +76,54 @@ export default function Dash() {
 
 
   return (
-    <div>
+    <div className="page-container">
+
       <form onSubmit={handleSubmit(onSubmit)}>
 
+          <div>
+            <label className="input-label">New Todo </label>
+            <input
+              className="input-field"
+              type="text"
+              placeholder="to do"
+              {...register("item",
+                {
+                  required: 'This field is required',
 
-        <input type="text" placeholder="to do" {...register("item", {required: true})} />
-        <ErrorMessage
-          errors={errors}
-          name="item"
-          render={({ message }) => <p>Preencha esse campo</p>}
-        />
+                }
+              )}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="item"
+              render={({ message }) => <div className="error-message">{message}</div>}
+            />
 
-        <input type="submit" />
-
+          <input
+            className="input-button"
+            value="add"
+            type="submit"
+          />
+        </div>
 
       </form>
-      <button
-        onClick={() => {
-          const url = 'http://localhost:5000/dash';
 
-          const api = axios.create({
-             withCredentials: true
-          });
+      <ToDosContainer>
+        {
+          todos.map((todo, key) => {
+            return(
+              <ToDo key={key}>
+                <input
+                  type="checkbox"
+                  checked={todo.done}
+                />
+                <ToDoName done={todo.done}>{todo.name}</ToDoName>
+              </ToDo>
+            )
+          })
+        }
+      </ToDosContainer>
 
-          api.get(url)
-          .then(resp => {
-            console.log('resp', resp)
-            return resp.data
-          })
-          .then(resp => console.log(resp))
-          .catch(error => {
-            console.log('error', error)
-            }
-          )
-          .finally(() => {
-            console.log('finally')
-          })
-        }}
-      >get To Do</button>
     </div>
   );
 }
