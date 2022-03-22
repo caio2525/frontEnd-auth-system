@@ -17,7 +17,7 @@ export const ToDoName = styled.div`
   font-size: 1.5rem;
   margin: 0 0.5rem;
   text-decoration: ${(props) => {
-    if (props.done == true)
+    if (props.done === true)
     {
       return 'line-through'
     }

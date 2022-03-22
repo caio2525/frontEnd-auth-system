@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 
-import '../../styles/index.css';
+
 import Form from '../../components/Form';
 import {apiPost} from '../../services/api'
 import { useNavigate } from 'react-router-dom';
