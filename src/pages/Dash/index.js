@@ -5,8 +5,6 @@ import { ToDosContainer, ToDo, ToDoName } from './styles';
 import {api} from '../../services/api';
 import { Audio } from  'react-loader-spinner'
 
-
-
 export default function Dash() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [isLoading, setIsLoading] = useState(true)
@@ -143,9 +141,6 @@ export default function Dash() {
                             var newTodos = todos;
                             newTodos[key] = newTodo
                             setTodos([...newTodos])
-                            //console.log('event', event)
-                            //console.log('newTodo', newTodo)
-                            //console.log('newTodos', newTodos)
                           }}
                         />
                         <ToDoName done={todo.done}>{todo.name}</ToDoName>

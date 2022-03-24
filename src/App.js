@@ -1,14 +1,14 @@
-import React, {useContext, useEffect} from 'react';
+import React from 'react';
 import './App.css';
 import './styles/index.css'
-import {BrowserRouter as Router, Routes, Route, NavLink, Navigate } from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Dash from './pages/Dash';
 import Logout from './pages/Logout';
 
-import {api} from './services/api';
+
 
 function App() {
 
